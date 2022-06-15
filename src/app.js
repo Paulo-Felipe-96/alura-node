@@ -1,27 +1,19 @@
 import express from "express";
+import livros from "./models/Livro.js";
+import dbConnect from "./services/dbConnect.js";
 
 const app = express();
 
 app.use(express.json());
-
-const livros = [
-  { id: 1, titulo: "Senhor dos Aneis" },
-  { id: 2, titulo: "O Hobbit" },
-  { id: 3, titulo: "O pequeno príncipe" },
-  { id: 4, titulo: "O banana" },
-];
 
 app.get("/", (req, res) => {
   res.status(200).send("Curso de Node");
 });
 
 app.get("/livros", (req, res) => {
-  res.status(200).json(livros);
-});
-
-app.get("/livros/:id", (req, res) => {
-  const posicao = buscaLivro(req.params.id);
-  res.json(livros[posicao]);
+  livros.find((error, livros) => {
+    res.status(200).json(livros);
+  });
 });
 
 app.post("/livros", (req, res) => {
