@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
 import { mongoDbUserName, mongoDbPassword } from "../config/index.js";
+import { handleError } from "../helpers/handleError.js";
 
 const { connect, connection } = mongoose;
-
-function handleError(error) {
-  throw new Error(error);
-}
 
 async function connectToDb() {
   try {
