@@ -1,13 +1,14 @@
 import express from "express";
 import livros from "./models/Livro.js";
 import dbConnect from "./services/dbConnect.js";
+import { handleError } from "./helpers/handleError.js";
 
 const app = express();
 
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.status(200).send("Curso de Node");
+  res.status(200).send("Welcome to bookstore!");
 });
 
 app.get("/livros", (req, res) => {
@@ -16,27 +17,49 @@ app.get("/livros", (req, res) => {
   });
 });
 
+app.get("/livro/:_id", (req, res) => {});
+
 app.post("/livros", (req, res) => {
-  livros.push(req.body);
-  res.status(201).send("Livro cadastrado com sucesso");
-});
+  try {
+    const { titulo, autor, editora, numeroPaginas } = req.body;
+    livros.create({
+      titulo: titulo,
+      autor: autor,
+      editora: editora,
+      numeroPaginas: numeroPaginas,
+    });
 
-app.put("/livros/:id", (req, res) => {
-  let posicao = buscaLivro(req.params.id);
-  livros[posicao].titulo = req.body.titulo;
-  res.json(livros);
-});
-
-app.delete("/livros/:id", (req, res) => {
-  const posicao = buscaLivro(req.params.id);
-  if (livros.length) {
-    livros.splice(posicao, 1);
-    res.json(livros);
-  }
-  if (!livros.length) {
-    res.status(404).end(`Nenhum registro encontrado`);
+    res.status(201).json({
+      status: 201,
+      Object_created: req.body,
+    });
+  } catch (error) {
+    handleError(error);
   }
 });
+
+app.delete("/livros/:_id", (req, res) => {
+  let deletedCount;
+  try {
+    livros.deleteOne({ _id: req.params._id }, (error, livros) => {
+      if (error) {
+        handleError(error);
+      }
+
+      deletedCount = livros.deletedCount;
+
+      res.status(200).json({
+        status: 200,
+        deleted:
+          deletedCount === 0 ? "Nenhum registro deletado" : "Registro deletado",
+      });
+    });
+  } catch (error) {
+    handleError(error);
+  }
+});
+
+app.put("/livros/:_id", (req, res) => {});
 
 function buscaLivro(id) {
   return livros.findIndex((livro) => livro.id == id);
