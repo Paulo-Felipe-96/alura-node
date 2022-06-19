@@ -8,21 +8,27 @@ class BookController {
   };
 
   static listAllBooks = (req, res) => {
-    books.find((error, books) => {
-      if (!error) {
-        res.status(200).json(books);
-      }
-    });
+    books
+      .find()
+      .populate("autor")
+      .exec((error, books) => {
+        !error
+          ? res.status(200).json(books)
+          : res.status(500).json({ message: error.message });
+      });
   };
 
   static findBookById = (req, res) => {
-    books.findById(req.params._id, (error, book) => {
-      if (!error && book) {
-        res.status(200).json(book);
-      } else {
-        this.bookNotFound(res);
-      }
-    });
+    books
+      .findById(req.params._id)
+      .populate("autor")
+      .exec((error, book) => {
+        if (!error && book) {
+          res.status(200).json(book);
+        } else {
+          this.bookNotFound(res);
+        }
+      });
   };
 
   static postBook = (req, res) => {
@@ -43,15 +49,15 @@ class BookController {
         $set: req.body,
       },
       (error, book) => {
-        const notFound = this.bookNotFound(res);
-        const success = res.status(200).json({
-          message:
-            book.modifiedCount > 0
-              ? "Registro atualizado"
-              : "Nenhum registro atualizado",
-        });
+        const modifiedCount = book.modifiedCount
+          ? "Registro atualizado"
+          : "Nenhum registro atualizado";
 
-        !error ? success : notFound;
+        !error
+          ? res.status(200).json({
+              message: modifiedCount,
+            })
+          : res.status(500).json({ message: error });
       }
     );
   };
