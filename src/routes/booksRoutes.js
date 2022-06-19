@@ -1,8 +1,8 @@
 import { Router } from "express";
-import LivroController from "../controllers/livrosController.js";
+import BookController from "../controllers/bookController.js";
 
 const { listAllBooks, postBook, deleteBookById, findBookById, updateBookById } =
-  LivroController;
+  BookController;
 
 const router = Router();
 
