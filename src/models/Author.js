@@ -6,7 +6,7 @@ const authorSchema = new Schema(
   {
     id: { type: String },
     nome: { type: String, required: true },
-    dataNascimento: { type: Date },
+    nascionalidade: { type: String },
   },
   { versionKey: false }
 );
