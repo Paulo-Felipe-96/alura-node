@@ -83,7 +83,7 @@ class LivroController {
     );
   };
 
-  static deleteBook = (req, res) => {
+  static deleteBookById = (req, res) => {
     livros.deleteOne({ _id: req.params._id }, (error, book) => {
       const isDeleted =
         book.deletedCount > 0
