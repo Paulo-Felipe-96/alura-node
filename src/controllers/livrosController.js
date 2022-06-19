@@ -3,7 +3,6 @@ import livros from "../models/Livro.js";
 class LivroController {
   static bookNotFound = (res) => {
     res.status(404).json({
-      status: 404,
       message: "Registro não encontrado",
     });
   };
@@ -20,9 +19,7 @@ class LivroController {
     livros.findById(req.params._id, (error, book) => {
       if (!error && book) {
         res.status(200).json(book);
-      }
-
-      if (!book) {
+      } else {
         this.bookNotFound(res);
       }
     });
@@ -31,62 +28,42 @@ class LivroController {
   static postBook = (req, res) => {
     const livro = new livros(req.body);
     livro.save((error) => {
-      error
-        ? res
-            .status(500)
-            .send({ message: `${error} - failed to proccess your request` })
-        : res
-            .status(201)
-            .send(livro);
+      !error
+        ? res.status(201).send(livro)
+        : res.status(500).send({ message: `${error.message}` });
     });
   };
 
   static updateBookById = (req, res) => {
-    const { titulo, autor, editora, numeroPaginas } = req.body;
     const bookId = req.params._id;
 
     livros.updateOne(
       { _id: bookId },
       {
-        $set: {
-          titulo: titulo,
-          autor: autor,
-          editora: editora,
-          numeroPaginas: numeroPaginas,
-        },
+        $set: req.body,
       },
       (error, book) => {
-        const isModified =
-          book.modifiedCount > 0
-            ? "Registro atualizado"
-            : "Nenhum registro atualizado";
+        const notFound = this.bookNotFound(res);
+        const success = res.status(200).json({
+          message:
+            book.modifiedCount > 0
+              ? "Registro atualizado"
+              : "Nenhum registro atualizado",
+        });
 
-        if (!error && book) {
-          res.status(200).json({
-            status: 200,
-            message: isModified,
-          });
-        }
-
-        if (!book) {
-          this.bookNotFound(res);
-        }
+        !error ? success : notFound;
       }
     );
   };
 
   static deleteBookById = (req, res) => {
     livros.deleteOne({ _id: req.params._id }, (error, book) => {
-      const isDeleted =
-        book.deletedCount > 0
-          ? "Registro deletado"
-          : "Nenhum registro deletado";
+      book.deletedCount === 0
+        ? this.bookNotFound(res)
+        : res.status(200).json({ message: "Registro deletado" });
 
-      if (!error) {
-        res.status(200).json({
-          status: 200,
-          message: isDeleted,
-        });
+      if (error) {
+        res.status(500).json({ message: error.message });
       }
     });
   };
