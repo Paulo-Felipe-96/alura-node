@@ -29,24 +29,16 @@ class LivroController {
   };
 
   static postBook = (req, res) => {
-    const { titulo, autor, editora, numeroPaginas } = req.body;
-
-    livros.create(
-      {
-        titulo: titulo,
-        autor: autor,
-        editora: editora,
-        numeroPaginas: numeroPaginas,
-      },
-      (error, book) => {
-        if (!error) {
-          res.status(201).json({
-            status: 201,
-            Object_created: book,
-          });
-        }
-      }
-    );
+    const livro = new livros(req.body);
+    livro.save((error) => {
+      error
+        ? res
+            .status(500)
+            .send({ message: `${error} - failed to proccess your request` })
+        : res
+            .status(201)
+            .send(livro);
+    });
   };
 
   static updateBookById = (req, res) => {
