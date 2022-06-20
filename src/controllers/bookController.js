@@ -10,7 +10,7 @@ class BookController {
   static listAllBooks = (req, res) => {
     books
       .find()
-      .populate("autor")
+      .populate(["autor", "editora"])
       .exec((error, books) => {
         !error
           ? res.status(200).json(books)
@@ -21,7 +21,7 @@ class BookController {
   static findBookById = (req, res) => {
     books
       .findById(req.params._id)
-      .populate("autor")
+      .populate(["autor", "editora"])
       .exec((error, book) => {
         if (!error && book) {
           res.status(200).json(book);
