@@ -91,6 +91,28 @@ class BookController {
       }
     });
   };
+
+  static deleteBooks = (req, res) => {
+    const booksToDelete = req.body["livros"];
+    const isData = Array.isArray(booksToDelete);
+
+    try {
+      isData
+        ? {
+            exec: booksToDelete.forEach((book) => {
+              books.deleteOne({ _id: `${book}` }, (book) => undefined);
+            }),
+            result: res.status(200).send("Processamento concluido"),
+          }
+        : res
+            .status(400)
+            .send(
+              `Dados incorretos, por favor envie no corpo da requisição: "livros":"[livros_id]"`
+            );
+    } catch (error) {
+      res.status(500).send(`Falha no processamento + ${error}`);
+    }
+  };
 }
 
 export default BookController;

@@ -5,6 +5,7 @@ const {
   listAllBooks,
   postBook,
   deleteBookById,
+  deleteBooks,
   findBookById,
   updateBookById,
   findBookByPublisherId,
@@ -20,6 +21,7 @@ router
   .get("/livro/:_id", findBookById)
   .put("/livro/:_id", updateBookById)
   .post("/livros", postBook)
-  .delete("/livro/:_id", deleteBookById);
+  .delete("/livros/deletar", deleteBooks)
+  .delete("/livro/:_id", deleteBookById)
 
 export default router;
