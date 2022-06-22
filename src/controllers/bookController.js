@@ -31,6 +31,24 @@ class BookController {
       });
   };
 
+  static findBookByPublisherId = (req, res) => {
+    books
+      .find({ editora: req.params.editora })
+      .populate(["autor", "editora"])
+      .exec((error, books) => {
+        res.status(200).json(books);
+      });
+  };
+
+  static findBookByAuthorId = (req, res) => {
+    books
+      .find({ autor: req.params.autor })
+      .populate(["autor", "editora"])
+      .exec((error, books) => {
+        res.status(200).json(books);
+      });
+  };
+
   static postBook = (req, res) => {
     const book = new books(req.body);
     book.save((error) => {
