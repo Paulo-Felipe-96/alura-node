@@ -31,6 +31,24 @@ class BookController {
       });
   };
 
+  static findBookByPublisherId = (req, res) => {
+    books
+      .find({ editora: req.params.editora })
+      .populate(["autor", "editora"])
+      .exec((error, books) => {
+        res.status(200).json(books);
+      });
+  };
+
+  static findBookByAuthorId = (req, res) => {
+    books
+      .find({ autor: req.params.autor })
+      .populate(["autor", "editora"])
+      .exec((error, books) => {
+        res.status(200).json(books);
+      });
+  };
+
   static postBook = (req, res) => {
     const book = new books(req.body);
     book.save((error) => {
@@ -72,6 +90,28 @@ class BookController {
         res.status(500).json({ message: error.message });
       }
     });
+  };
+
+  static deleteBooks = (req, res) => {
+    const booksToDelete = req.body["livros"];
+    const isData = Array.isArray(booksToDelete);
+
+    try {
+      isData
+        ? {
+            exec: booksToDelete.forEach((book) => {
+              books.deleteOne({ _id: `${book}` }, (book) => undefined);
+            }),
+            result: res.status(200).send("Processamento concluido"),
+          }
+        : res
+            .status(400)
+            .send(
+              `Dados incorretos, por favor envie no corpo da requisição: "livros":"[livros_id]"`
+            );
+    } catch (error) {
+      res.status(500).send(`Falha no processamento + ${error}`);
+    }
   };
 }
 
