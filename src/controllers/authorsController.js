@@ -1,4 +1,5 @@
 import authors from "../models/Author.js";
+import { handleError } from "../helpers/handleError.js";
 
 class AuthorControler {
   static authorNotFound = (res) => {
@@ -8,20 +9,18 @@ class AuthorControler {
   };
 
   static listAllAuthors = (req, res) => {
-    authors.find((error, books) => {
-      if (!error) {
-        res.status(200).json(books);
-      }
+    authors.find((error, authors) => {
+      !error
+        ? res.status(200).json(authors)
+        : res.status(500).json({ message: error.message });
     });
   };
 
   static findAuthorById = (req, res) => {
     authors.findById(req.params._id, (error, author) => {
-      if (!error && author) {
-        res.status(200).json(author);
-      } else {
-        this.authorNotFound(res);
-      }
+      !error
+        ? res.status(200).json(author)
+        : res.status(500).json({ message: error.message });
     });
   };
 
@@ -30,7 +29,7 @@ class AuthorControler {
     author.save((error) => {
       !error
         ? res.status(201).send(author)
-        : res.status(500).send({ message: `${error.message}` });
+        : res.status(400).send({ message: `${error.message}` });
     });
   };
 
@@ -43,27 +42,27 @@ class AuthorControler {
         $set: req.body,
       },
       (error, author) => {
-        const notFound = this.authorNotFound(res);
-        const success = res.status(200).json({
-          message:
-            author.modifiedCount > 0
-              ? "Registro atualizado"
-              : "Nenhum registro atualizado",
-        });
-
-        !error ? success : notFound;
+        !error
+          ? res.status(200).json({
+              message:
+                author.modifiedCount > 0
+                  ? "Registro atualizado"
+                  : "Nenhum registro atualizado",
+              id: authorId,
+            })
+          : res.status(500).json({ message: error.message });
       }
     );
   };
 
   static deleteAuthorById = (req, res) => {
     authors.deleteOne({ _id: req.params._id }, (error, author) => {
-      author.deletedCount === 0
-        ? this.authorNotFound(res)
-        : res.status(200).json({ message: "Registro deletado" });
-
       if (error) {
         res.status(500).json({ message: error.message });
+      }
+
+      if (!error && author.deletedCount > 0) {
+        res.status(200).json({ message: "Registro deletado" });
       }
     });
   };

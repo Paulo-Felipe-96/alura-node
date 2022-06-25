@@ -23,11 +23,9 @@ class BookController {
       .findById(req.params._id)
       .populate(["autor", "editora"])
       .exec((error, book) => {
-        if (!error && book) {
-          res.status(200).json(book);
-        } else {
-          this.bookNotFound(res);
-        }
+        !error
+          ? res.status(200).json(book)
+          : res.status(500).json({ message: error.message });
       });
   };
 
@@ -36,7 +34,9 @@ class BookController {
       .find({ editora: req.params.editora })
       .populate(["autor", "editora"])
       .exec((error, books) => {
-        res.status(200).json(books);
+        !error
+          ? res.status(200).json(books)
+          : res.status(500).json({ message: error.message });
       });
   };
 
@@ -45,7 +45,9 @@ class BookController {
       .find({ autor: req.params.autor })
       .populate(["autor", "editora"])
       .exec((error, books) => {
-        res.status(200).json(books);
+        !error
+          ? res.status(200).json(books)
+          : res.status(500).json({ message: error.message });
       });
   };
 
@@ -54,7 +56,7 @@ class BookController {
     book.save((error) => {
       !error
         ? res.status(201).send(book)
-        : res.status(500).send({ message: `${error.message}` });
+        : res.status(400).json({ message: error.message });
     });
   };
 
@@ -67,27 +69,27 @@ class BookController {
         $set: req.body,
       },
       (error, book) => {
-        const modifiedCount = book.modifiedCount
-          ? "Registro atualizado"
-          : "Nenhum registro atualizado";
-
         !error
           ? res.status(200).json({
-              message: modifiedCount,
+              message:
+                book.modifiedCount > 0
+                  ? "Registro atualizado"
+                  : "Nenhum registro atualizado",
+              id: bookId,
             })
-          : res.status(500).json({ message: error });
+          : res.status(500).json({ message: error.message });
       }
     );
   };
 
   static deleteBookById = (req, res) => {
     books.deleteOne({ _id: req.params._id }, (error, book) => {
-      book.deletedCount === 0
-        ? this.bookNotFound(res)
-        : res.status(200).json({ message: "Registro deletado" });
-
       if (error) {
         res.status(500).json({ message: error.message });
+      }
+
+      if (!error && book.deletedCount > 0) {
+        res.status(200).json({ message: "Registro deletado" });
       }
     });
   };
@@ -97,20 +99,20 @@ class BookController {
     const isData = Array.isArray(booksToDelete);
 
     try {
-      isData
-        ? {
-            exec: booksToDelete.forEach((book) => {
-              books.deleteOne({ _id: `${book}` }, (book) => undefined);
-            }),
-            result: res.status(200).send("Processamento concluido"),
-          }
-        : res
-            .status(400)
-            .send(
-              `Dados incorretos, por favor envie no corpo da requisição: "livros":"[livros_id]"`
-            );
+      if (isData) {
+        booksToDelete.forEach((book) => {
+          books.deleteOne({ _id: `${book}` }, () => null);
+        });
+
+        res.status(200).send("Processamento concluido");
+      } else {
+        res.status(400).json({
+          message: `Dados incorretos, por favor, verifique se o payload possui o formato indicado`,
+          format: `"livros": [id]`,
+        });
+      }
     } catch (error) {
-      res.status(500).send(`Falha no processamento + ${error}`);
+      res.status(500).json({ message: error });
     }
   };
 }

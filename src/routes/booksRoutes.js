@@ -19,8 +19,8 @@ router
   .get("/livros/editora/:editora", findBookByPublisherId)
   .get("/livros/autor/:autor", findBookByAuthorId)
   .get("/livro/:_id", findBookById)
-  .put("/livro/:_id", updateBookById)
   .post("/livros", postBook)
+  .put("/livro/:_id", updateBookById)
   .delete("/livros/deletar", deleteBooks)
   .delete("/livro/:_id", deleteBookById)
 
