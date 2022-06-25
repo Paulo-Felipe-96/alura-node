@@ -1,3 +1,3 @@
-export function handleError(error) {
+export const handleError = (error) => {
   throw new Error(error);
-}
+};
