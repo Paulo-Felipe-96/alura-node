@@ -18,9 +18,13 @@ class PublisherController {
 
   static findPublisherById = (req, res) => {
     publishers.findById(req.params._id, (error, publisher) => {
-      !error && publisher
-        ? res.status(200).json(publisher)
-        : this.publisherNotFound(res);
+      if (error) {
+        res.status(500).json({ message: error });
+      }
+
+      !error && !publisher
+        ? res.json({ mensagem: "Registro não encontrado" })
+        : res.json(publisher);
     });
   };
 
@@ -56,13 +60,15 @@ class PublisherController {
   };
 
   static deletePublisherById = (req, res) => {
-    authors.deleteOne({ _id: req.params._id }, (error, publisher) => {
+    publishers.deleteOne({ _id: req.params._id }, (error, publisher) => {
       if (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error });
       }
 
-      if (!error && publisher.deletedCount > 0) {
-        res.status(200).json({ message: "Registro deletado" });
+      if (!error) {
+        publisher.deletedCount
+          ? res.status(200).json({ message: "Registro deletado" })
+          : res.status(404).json({ message: "Registro não encontrado" });
       }
     });
   };

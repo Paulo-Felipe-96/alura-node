@@ -23,9 +23,13 @@ class BookController {
       .findById(req.params._id)
       .populate(["autor", "editora"])
       .exec((error, book) => {
-        !error
-          ? res.status(200).json(book)
-          : res.status(500).json({ message: error.message });
+        if (error) {
+          res.status(500).json({ message: error });
+        }
+
+        !error && !book
+          ? res.json({ mensagem: "Registro não encontrado" })
+          : res.json(book);
       });
   };
 
@@ -34,9 +38,9 @@ class BookController {
       .find({ editora: req.params.editora })
       .populate(["autor", "editora"])
       .exec((error, books) => {
-        !error
-          ? res.status(200).json(books)
-          : res.status(500).json({ message: error.message });
+        error
+          ? res.status(500).json({ message: error })
+          : res.status(200).json(books);
       });
   };
 
@@ -45,9 +49,9 @@ class BookController {
       .find({ autor: req.params.autor })
       .populate(["autor", "editora"])
       .exec((error, books) => {
-        !error
-          ? res.status(200).json(books)
-          : res.status(500).json({ message: error.message });
+        error
+          ? res.status(500).json({ message: error })
+          : res.status(200).json(books);
       });
   };
 
@@ -85,11 +89,13 @@ class BookController {
   static deleteBookById = (req, res) => {
     books.deleteOne({ _id: req.params._id }, (error, book) => {
       if (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error });
       }
 
-      if (!error && book.deletedCount > 0) {
-        res.status(200).json({ message: "Registro deletado" });
+      if (!error) {
+        book.deletedCount
+          ? res.status(200).json({ message: "Registro deletado" })
+          : res.status(404).json({ message: "Registro não encontrado" });
       }
     });
   };

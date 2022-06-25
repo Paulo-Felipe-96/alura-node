@@ -18,9 +18,13 @@ class AuthorControler {
 
   static findAuthorById = (req, res) => {
     authors.findById(req.params._id, (error, author) => {
-      !error
-        ? res.status(200).json(author)
-        : res.status(500).json({ message: error.message });
+      if (error) {
+        res.status(500).json({ message: error });
+      }
+
+      !error && !author
+        ? res.json({ mensagem: "Registro não encontrado" })
+        : res.json(author);
     });
   };
 
@@ -58,11 +62,13 @@ class AuthorControler {
   static deleteAuthorById = (req, res) => {
     authors.deleteOne({ _id: req.params._id }, (error, author) => {
       if (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error });
       }
 
-      if (!error && author.deletedCount > 0) {
-        res.status(200).json({ message: "Registro deletado" });
+      if (!error) {
+        author.deletedCount
+          ? res.status(200).json({ message: "Registro deletado" })
+          : res.status(404).json({ message: "Registro não encontrado" });
       }
     });
   };
