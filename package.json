@@ -1,6 +1,6 @@
 {
-  "name": "alura-node",
-  "version": "1.0.0",
+  "name": "bookstore-api",
+  "version": "1.0.1",
   "description": "",
   "main": "server.js",
   "type": "module",
