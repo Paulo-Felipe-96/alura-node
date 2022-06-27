@@ -1,12 +1,6 @@
 import books from "../models/Book.js";
 
 class BookController {
-  static bookNotFound = (res) => {
-    res.status(404).json({
-      message: "Registro não encontrado",
-    });
-  };
-
   static listAllBooks = (req, res) => {
     books
       .find()

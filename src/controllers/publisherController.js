@@ -1,13 +1,6 @@
 import publishers from "../models/Publisher.js";
-import { handleError } from "../helpers/handleError.js";
 
 class PublisherController {
-  static publisherNotFound = (res) => {
-    res.status(404).json({
-      message: "Registro não encontrado",
-    });
-  };
-
   static listAllPublishers = (req, res) => {
     publishers.find((error, publishers) => {
       !error
