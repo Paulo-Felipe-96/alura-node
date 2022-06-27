@@ -1,13 +1,6 @@
 import authors from "../models/Author.js";
-import { handleError } from "../helpers/handleError.js";
 
 class AuthorControler {
-  static authorNotFound = (res) => {
-    res.status(404).json({
-      message: "Registro não encontrado",
-    });
-  };
-
   static listAllAuthors = (req, res) => {
     authors.find((error, authors) => {
       !error
