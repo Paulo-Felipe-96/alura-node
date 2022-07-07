@@ -1,7 +1,7 @@
-import express from "express";
-import dbConnect from "./services/dbConnect.js";
-import { handleError } from "./helpers/handleError.js";
-import routes from "./routes/index.js";
+const express = require("express");
+const dbConnect = require("./services/dbConnect");
+const handleError = require("./helpers/handleError");
+const routes = require("./routes");
 
 const app = express();
 
@@ -11,4 +11,4 @@ try {
   handleError(error);
 }
 
-export default app;
+module.exports = app;

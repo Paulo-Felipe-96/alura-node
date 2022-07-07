@@ -1,5 +1,5 @@
-import { Router } from "express";
-import PublisherController from "../controllers/publisherController.js";
+const { Router } = require("express");
+const PublisherController = require("../controllers/publisherController");
 
 const {
   listAllPublishers,
@@ -18,4 +18,4 @@ router
   .put("/editora/:_id", updatePublisherById)
   .delete("/editora/:_id", deletePublisherById);
 
-export default router;
+module.exports = router;

@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import { mongoDbUserName, mongoDbPassword } from "../config/index.js";
-import { handleError } from "../helpers/handleError.js";
+const mongoose = require("mongoose");
+const { mongoDbUserName, mongoDbPassword } = require("../config");
+const handleError = require("../helpers/handleError");
 
 const { connect, connection } = mongoose;
 
@@ -14,4 +14,4 @@ async function connectToDb() {
   }
 }
 
-export default connectToDb();
+module.exports = connectToDb();

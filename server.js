@@ -1,6 +1,6 @@
-import app from "./src/app.js";
-import { port } from "./src/config/index.js";
-import { handleError } from "./src/helpers/handleError.js";
+const app = require("./src/app");
+const { port } = require("./src/config");
+const handleError = require("./src/helpers/handleError");
 
 try {
   app.listen(port, () => {

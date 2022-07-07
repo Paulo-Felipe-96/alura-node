@@ -1,4 +1,4 @@
-import books from "../models/Book.js";
+const books = require("../models/Book");
 
 class BookController {
   static listAllBooks = (req, res) => {
@@ -100,11 +100,8 @@ class BookController {
 
     try {
       if (isData) {
-        booksToDelete.forEach((book) => {
-          books.deleteOne({ _id: `${book}` }, () => null);
-        });
-
-        res.status(200).send("Processamento concluido");
+        books.deleteMany({ _id: booksToDelete }, () => null);
+        res.status(200).json({ message: "Processamento concluído" });
       } else {
         res.status(400).json({
           message: `Dados incorretos, por favor, verifique se o payload possui o formato indicado`,
@@ -112,9 +109,9 @@ class BookController {
         });
       }
     } catch (error) {
-      res.status(500).json({ message: error });
+      res.status(500).json({ message: error.message });
     }
   };
 }
 
-export default BookController;
+module.exports = BookController;

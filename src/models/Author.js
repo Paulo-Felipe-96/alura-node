@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const { Schema, model } = mongoose;
 
@@ -13,4 +13,4 @@ const authorSchema = new Schema(
 
 const authors = model("autores", authorSchema);
 
-export default authors;
+module.exports = authors;

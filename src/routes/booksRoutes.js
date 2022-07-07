@@ -1,5 +1,5 @@
-import { Router } from "express";
-import BookController from "../controllers/bookController.js";
+const { Router } = require("express");
+const BookController = require("../controllers/bookController");
 
 const {
   listAllBooks,
@@ -22,6 +22,6 @@ router
   .post("/livros", postBook)
   .put("/livro/:_id", updateBookById)
   .delete("/livros/deletar", deleteBooks)
-  .delete("/livro/:_id", deleteBookById)
+  .delete("/livro/:_id", deleteBookById);
 
-export default router;
+module.exports = router;

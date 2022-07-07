@@ -1,5 +1,5 @@
-import { Router } from "express";
-import AuthorControler from "../controllers/authorsController.js";
+const { Router } = require("express");
+const AuthorControler = require("../controllers/authorsController");
 
 const {
   listAllAuthors,
@@ -18,4 +18,4 @@ router
   .put("/autor/:_id", updateAuthorById)
   .delete("/autor/:_id", deleteAuthorById);
 
-export default router;
+module.exports = router;

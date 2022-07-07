@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const { Schema, model } = mongoose;
 
@@ -9,4 +9,4 @@ const publisherSchema = new Schema({
 
 const publishers = model("editoras", publisherSchema);
 
-export default publishers;
+module.exports = publishers;

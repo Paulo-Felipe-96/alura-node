@@ -1,7 +1,7 @@
-import express from "express";
-import authors from "./authorsRoutes.js";
-import books from "./booksRoutes.js";
-import publishers from "./publisherRoutes.js";
+const express = require("express");
+const authors = require("./authorsRoutes");
+const books = require("./booksRoutes");
+const publishers = require("./publisherRoutes");
 
 const routes = (app) => {
   app.route("/").get((req, res) => {
@@ -15,4 +15,4 @@ const routes = (app) => {
   app.use(express.json(), books, authors, publishers);
 };
 
-export default routes;
+module.exports = routes;

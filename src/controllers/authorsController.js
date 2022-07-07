@@ -1,5 +1,4 @@
-import authors from "../models/Author.js";
-
+const authors = require("../models/Author");
 class AuthorControler {
   static listAllAuthors = (req, res) => {
     authors.find((error, authors) => {
@@ -67,4 +66,4 @@ class AuthorControler {
   };
 }
 
-export default AuthorControler;
+module.exports = AuthorControler;

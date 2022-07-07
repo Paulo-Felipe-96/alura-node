@@ -1,4 +1,4 @@
-import publishers from "../models/Publisher.js";
+const publishers = require("../models/Publisher");
 
 class PublisherController {
   static listAllPublishers = (req, res) => {
@@ -67,4 +67,4 @@ class PublisherController {
   };
 }
 
-export default PublisherController;
+module.exports = PublisherController;

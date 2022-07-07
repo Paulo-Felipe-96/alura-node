@@ -1,5 +1,11 @@
-import "dotenv/config";
+const config = require("dotenv/config");
 
-export const mongoDbUserName = process.env.ATLAS_USERNAME;
-export const mongoDbPassword = process.env.ATLAS_PASSWORD;
-export const port = process.env.PORT || 3000;
+const mongoDbUserName = process.env.ATLAS_USERNAME;
+const mongoDbPassword = process.env.ATLAS_PASSWORD;
+const port = process.env.PORT || 3000;
+
+module.exports = {
+  mongoDbPassword,
+  mongoDbUserName,
+  port,
+};
