@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
-    "dev:debug": "nodemon --inspect server.js",
     "start": "node server.js"
   },
   "author": "Paulo-Felipe-96",
