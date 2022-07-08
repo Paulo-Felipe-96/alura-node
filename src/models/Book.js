@@ -15,6 +15,7 @@ const bookSchema = new Schema({
     ref: "editoras",
     required: true,
   },
+  linkCompra: { type: String, required: true },
   numeroPaginas: { type: Number },
 });
 
