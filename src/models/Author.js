@@ -8,7 +8,7 @@ const authorSchema = new Schema(
     nome: { type: String, required: true },
     nascionalidade: { type: String },
   },
-  { versionKey: false }
+  { versionKey: false },
 );
 
 const authors = model("autores", authorSchema);
