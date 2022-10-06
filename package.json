@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "NODE_ENV=development nodemon src/server.js",
     "dev:debug": "NODE_ENV=development nodemon --inspect src/server.js",
-    "start": "NODE_ENV=production node src/server.js"
+    "start": "NODE_ENV=production node src/server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --watch",
+    "test:watchAll": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --watchAll"
   },
   "author": "Paulo-Felipe-96",
   "license": "ISC",
