@@ -2,11 +2,11 @@ const { Router } = require("express");
 const BookController = require("../controllers/bookController");
 
 const {
-  listAllBooks,
-  postBook,
+  getBooks,
+  setBook,
   deleteBookById,
-  deleteBooks,
-  findBookById,
+  deleteManyBooksById,
+  getBookById,
   updateBookById,
   findBookByPublisherId,
   findBookByAuthorId,
@@ -15,13 +15,13 @@ const {
 const router = Router();
 
 router
-  .get("/livros", listAllBooks)
+  .get("/livros", getBooks)
   .get("/livros/editora/:editora", findBookByPublisherId)
   .get("/livros/autor/:autor", findBookByAuthorId)
-  .get("/livro/:_id", findBookById)
-  .post("/livros", postBook)
-  .put("/livro/:_id", updateBookById)
-  .delete("/livros/deletar", deleteBooks)
-  .delete("/livro/:_id", deleteBookById);
+  .get("/livros/:_id", getBookById)
+  .post("/livros", setBook)
+  .put("/livros/:_id", updateBookById)
+  .delete("/livros/", deleteManyBooksById)
+  .delete("/livros/:_id", deleteBookById);
 
 module.exports = router;

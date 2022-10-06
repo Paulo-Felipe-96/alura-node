@@ -2,19 +2,19 @@ const { Router } = require("express");
 const AuthorControler = require("../controllers/authorsController");
 
 const {
-  listAllAuthors,
-  findAuthorById,
+  getAuthors,
+  getAuthorById,
   updateAuthorById,
-  postAuthor,
+  setAuthor,
   deleteAuthorById,
 } = AuthorControler;
 
 const router = Router();
 
 router
-  .get("/autores", listAllAuthors)
-  .get("/autor/:_id", findAuthorById)
-  .post("/autores", postAuthor)
+  .get("/autores", getAuthors)
+  .get("/autor/:_id", getAuthorById)
+  .post("/autores", setAuthor)
   .put("/autor/:_id", updateAuthorById)
   .delete("/autor/:_id", deleteAuthorById);
 

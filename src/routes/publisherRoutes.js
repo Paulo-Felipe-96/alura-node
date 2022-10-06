@@ -1,21 +1,20 @@
 const { Router } = require("express");
-const PublisherController = require("../controllers/publisherController");
 
 const {
-  listAllPublishers,
-  findPublisherById,
-  postPublisher,
+  getPublishers,
+  getPublisherById,
+  setPublisher,
   updatePublisherById,
   deletePublisherById,
-} = PublisherController;
+} = require("../controllers/publisherController");
 
 const router = Router();
 
 router
-  .get("/editoras", listAllPublishers)
-  .get("/editora/:_id", findPublisherById)
-  .post("/editora", postPublisher)
-  .put("/editora/:_id", updatePublisherById)
-  .delete("/editora/:_id", deletePublisherById);
+  .get("/editoras", getPublishers)
+  .get("/editoras/:_id", getPublisherById)
+  .post("/editoras", setPublisher)
+  .put("/editoras/:_id", updatePublisherById)
+  .delete("/editoras/:_id", deletePublisherById);
 
 module.exports = router;
