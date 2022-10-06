@@ -1,69 +1,91 @@
-const authors = require("../models/Author");
-class AuthorControler {
-  static listAllAuthors = (req, res) => {
-    authors.find((error, authors) => {
-      !error
-        ? res.status(200).json(authors)
-        : res.status(500).json({ message: error.message });
-    });
-  };
+const {
+  getAuthors, getAuthorById, setAuthor, updateAuthorById, deleteAuthorById,
+} = require("../repositories/AuthorRepository");
 
-  static findAuthorById = (req, res) => {
-    authors.findById(req.params._id, (error, author) => {
-      if (error) {
-        res.status(500).json({ message: error });
+class AuthorController {
+  static async getAuthors(req, res) {
+    try {
+      const data = await getAuthors();
+
+      if (!data.length) {
+        return res.status(404).json({ message: "nenhum dado foi retornado" });
       }
 
-      !error && !author
-        ? res.json({ mensagem: "Registro não encontrado" })
-        : res.json(author);
-    });
-  };
+      return res.status(200).json(data);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
 
-  static postAuthor = (req, res) => {
-    const author = new authors(req.body);
-    author.save((error) => {
-      !error
-        ? res.status(201).send(author)
-        : res.status(400).send({ message: `${error.message}` });
-    });
-  };
+  static async getAuthorById(req, res) {
+    const { _id } = req.params;
 
-  static updateAuthorById = (req, res) => {
-    const authorId = req.params._id;
+    try {
+      const data = await getAuthorById(_id);
 
-    authors.updateOne(
-      { _id: authorId },
-      {
-        $set: req.body,
-      },
-      (error, author) => {
-        !error
-          ? res.status(200).json({
-              message:
-                author.modifiedCount > 0
-                  ? "Registro atualizado"
-                  : "Nenhum registro atualizado",
-              id: authorId,
-            })
-          : res.status(500).json({ message: error.message });
-      }
-    );
-  };
-
-  static deleteAuthorById = (req, res) => {
-    authors.deleteOne({ _id: req.params._id }, (error, author) => {
-      if (error) {
-        res.status(500).json({ message: error });
+      if (!data) {
+        return res.status(404).json({ message: "nenhum dado foi retornado" });
       }
 
-      if (!error) {
-        author.deletedCount
-          ? res.status(200).json({ message: "Registro deletado" })
-          : res.status(404).json({ message: "Registro não encontrado" });
+      return res.status(200).json(data);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async setAuthor(req, res) {
+    const { body } = req;
+
+    try {
+      const data = await setAuthor(body);
+
+      if (!data) {
+        return res
+          .status(400)
+          .json({ message: "há algo errado com o corpo da requisição" });
       }
-    });
-  };
+
+      return res.status(201).json(data);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async updateAuthorById(req, res) {
+    const { _id } = req.params;
+    const data = req.body;
+    let isUpdated;
+
+    try {
+      const update = await updateAuthorById(_id, data);
+
+      isUpdated = update.modifiedCount > 0
+        ? "Registro atualizado"
+        : "Nenhum dado foi atualizado";
+
+      return res.status(200).json({ message: isUpdated, id: _id });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async deleteAuthorById(req, res) {
+    const { _id } = req.params;
+
+    try {
+      const remove = await deleteAuthorById({ _id });
+
+      if (!remove.deletedCount) {
+        return res
+          .status(404)
+          .json({ message: "nenhum registro foi deletado" });
+      }
+
+      return res.status(200).json({ message: "registro deletado" });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
 }
 
-module.exports = AuthorControler;
+module.exports = AuthorController;

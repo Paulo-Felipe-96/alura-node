@@ -1,70 +1,91 @@
-const publishers = require("../models/Publisher");
+const {
+  getPublishers, getPublisherById, setPublisher, updatePublisherById, deletePublisherById,
+} = require("../repositories/PublisherRepository");
 
 class PublisherController {
-  static listAllPublishers = (req, res) => {
-    publishers.find((error, publishers) => {
-      !error
-        ? res.status(200).json(publishers)
-        : res.status(500).json({ message: error.message });
-    });
-  };
+  static async getPublishers(req, res) {
+    try {
+      const publishers = await getPublishers();
 
-  static findPublisherById = (req, res) => {
-    publishers.findById(req.params._id, (error, publisher) => {
-      if (error) {
-        res.status(500).json({ message: error });
+      if (!publishers.length) {
+        return res.status(404).json({ message: "nenhum dado foi retornado" });
       }
 
-      !error && !publisher
-        ? res.json({ mensagem: "Registro não encontrado" })
-        : res.json(publisher);
-    });
-  };
+      return res.status(200).json(publishers);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
 
-  static postPublisher = (req, res) => {
-    const publisher = new publishers(req.body);
-    publisher.save((error) => {
-      !error
-        ? res.status(201).send(publisher)
-        : res.status(400).send({ message: `${error.message}` });
-    });
-  };
+  static async getPublisherById(req, res) {
+    const { _id } = req.params;
 
-  static updatePublisherById = (req, res) => {
-    const publisherId = req.params._id;
+    try {
+      const publishers = await getPublisherById(_id);
 
-    publishers.updateOne(
-      { _id: publisherId },
-      {
-        $set: req.body,
-      },
-      (error, publisher) => {
-        !error
-          ? res.status(200).json({
-              message:
-                publisher.modifiedCount > 0
-                  ? "Registro atualizado"
-                  : "Nenhum registro atualizado",
-              id: publisherId,
-            })
-          : res.status(500).json({ message: error.message });
-      }
-    );
-  };
-
-  static deletePublisherById = (req, res) => {
-    publishers.deleteOne({ _id: req.params._id }, (error, publisher) => {
-      if (error) {
-        res.status(500).json({ message: error });
+      if (!publishers) {
+        return res.status(404).json({ message: "nenhum dado foi retornado" });
       }
 
-      if (!error) {
-        publisher.deletedCount
-          ? res.status(200).json({ message: "Registro deletado" })
-          : res.status(404).json({ message: "Registro não encontrado" });
+      return res.status(200).json(publishers);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async setPublisher(req, res) {
+    const { body } = req;
+
+    try {
+      const publisher = await setPublisher(body);
+
+      if (!publisher) {
+        return res
+          .status(400)
+          .json({ message: "há algo errado com o corpo da requisição" });
       }
-    });
-  };
+
+      return res.status(201).json(publisher);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async updatePublisherById(req, res) {
+    const { _id } = req.params;
+    const publisher = req.body;
+    let isUpdated;
+
+    try {
+      const update = await updatePublisherById(_id, publisher);
+
+      isUpdated = update.modifiedCount > 0
+        ? "Registro atualizado"
+        : "Nenhum dado foi atualizado";
+
+      return res.status(200).json({ message: isUpdated, id: _id });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async deletePublisherById(req, res) {
+    const { _id } = req.params;
+
+    try {
+      const remove = await deletePublisherById({ _id });
+
+      if (!remove.deletedCount) {
+        return res
+          .status(404)
+          .json({ message: "nenhum registro foi deletado" });
+      }
+
+      return res.status(200).json({ message: "registro deletado" });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 module.exports = PublisherController;
