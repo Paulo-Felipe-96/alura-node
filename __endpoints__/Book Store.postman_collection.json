@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "e64f2e66-a41f-443f-ba86-844e76ee6c8a",
-		"name": "Book Store PROD",
+		"_postman_id": "ab1f9ab2-c920-4c9a-9d38-1cadc0c88967",
+		"name": "Book Store",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -26,9 +26,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{heroku-api}}/autores",
+							"raw": "{{dev}}/autores",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"autores"
@@ -43,13 +43,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{heroku-api}}/autor/62b78b1c3aadf7dd07528c4A",
+							"raw": "{{dev}}/autor/62af9c9a5809e5fb48f09620",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"autor",
-								"62b78b1c3aadf7dd07528c4A"
+								"62af9c9a5809e5fb48f09620"
 							]
 						}
 					},
@@ -62,7 +62,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Oscar Wilde\",\n    \"nascionalidade\": \"Francesa\"\n}",
+							"raw": "{\n    \"nome\": \"Oscar Wilde IV\",\n    \"nascionalidade\": \"Francesa\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -70,9 +70,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{heroku-api}}/autores",
+							"raw": "{{dev}}/autores",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"autores"
@@ -88,7 +88,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"FFFS\"\n}",
+							"raw": "{\n    \"nome\": \"Oscar Wilde III\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -96,13 +96,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{heroku-api}}/autor/62b78b1c3aadf7dd07528c4B",
+							"raw": "{{dev}}/autor/63338eabbdcbd910468d4e80",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"autor",
-								"62b78b1c3aadf7dd07528c4B"
+								"63338eabbdcbd910468d4e80"
 							]
 						}
 					},
@@ -114,13 +114,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{heroku-api}}/autor/62b78b1c3aadf7dd07528c4a",
+							"raw": "{{dev}}/autor/6334afe180b3c3f58163a7b3",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"autor",
-								"62b78b1c3aadf7dd07528c4a"
+								"6334afe180b3c3f58163a7b3"
 							]
 						}
 					},
@@ -137,9 +137,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{heroku-api}}/livros",
+							"raw": "{{dev}}/livros",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"livros"
@@ -154,12 +154,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{heroku-api}}/livro/62c8a114a4d46e4c9aa611d9",
+							"raw": "{{dev}}/livros/62c8a114a4d46e4c9aa611d9",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
-								"livro",
+								"livros",
 								"62c8a114a4d46e4c9aa611d9"
 							]
 						}
@@ -172,9 +172,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{heroku-api}}/livros/editora/62afaec8031725fe8c362f9c",
+							"raw": "{{dev}}/livros/editora/62afaec8031725fe8c362f9c",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"livros",
@@ -191,9 +191,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{heroku-api}}/livros/autor/62c8a0d6a4d46e4c9aa611d5",
+							"raw": "{{dev}}/livros/autor/62c8a0d6a4d46e4c9aa611d5",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"livros",
@@ -219,9 +219,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{heroku-api}}/livros",
+							"raw": "{{dev}}/livros",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"livros"
@@ -245,9 +245,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{heroku-api}}/livro/62afde334e6809a6e2ca54e5",
+							"raw": "{{dev}}/livro/62afde334e6809a6e2ca54e5",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"livro",
@@ -263,13 +263,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{heroku-api}}/livro/62c89b63a4d46e4c9aa611b4",
+							"raw": "{{dev}}/livros/62c8a114a4d46e4c9aa611d9",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
-								"livro",
-								"62c89b63a4d46e4c9aa611b4"
+								"livros",
+								"62c8a114a4d46e4c9aa611d9"
 							]
 						}
 					},
@@ -282,7 +282,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"livros\": [\n        \"62c7635c414cc0872047b822\",\n        \"62c76366414cc0872047b824\"\n    ]\n}",
+							"raw": "{\n    \"livros\": [\n        \"633f35f7d6a7d38da26f7037\",\n        \"633f35f8d6a7d38da26f7039\",\n        \"633f35f9d6a7d38da26f703b\"\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -290,13 +290,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{heroku-api}}/livros/deletar",
+							"raw": "{{dev}}/livros/",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"livros",
-								"deletar"
+								""
 							]
 						}
 					},
@@ -313,9 +313,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{heroku-api}}/editoras",
+							"raw": "{{dev}}/editoras",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
 								"editoras"
@@ -330,13 +330,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{heroku-api}}/editora/osaodo",
+							"raw": "{{dev}}/editoras/62afaeb5031725fe8c362f98",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
-								"editora",
-								"osaodo"
+								"editoras",
+								"62afaeb5031725fe8c362f98"
 							]
 						}
 					},
@@ -357,12 +357,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{heroku-api}}/editora",
+							"raw": "{{dev}}/editoras",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
-								"editora"
+								"editoras"
 							]
 						}
 					},
@@ -383,13 +383,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{heroku-api}}/editora/62b78baf3aadf7dd07528c60",
+							"raw": "{{dev}}/editoras/633f3d6f5b2fdee6bdcb4fd7",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
-								"editora",
-								"62b78baf3aadf7dd07528c60"
+								"editoras",
+								"633f3d6f5b2fdee6bdcb4fd7"
 							]
 						}
 					},
@@ -401,13 +401,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{heroku-api}}/editora/62b78baf3aadf7dd07528c60",
+							"raw": "{{dev}}/editoras/633f3d6f5b2fdee6bdcb4fd7",
 							"host": [
-								"{{heroku-api}}"
+								"{{dev}}"
 							],
 							"path": [
-								"editora",
-								"62b78baf3aadf7dd07528c60"
+								"editoras",
+								"633f3d6f5b2fdee6bdcb4fd7"
 							]
 						}
 					},
@@ -421,9 +421,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{heroku-api}}/",
+					"raw": "{{dev}}/",
 					"host": [
-						"{{heroku-api}}"
+						"{{dev}}"
 					],
 					"path": [
 						""
