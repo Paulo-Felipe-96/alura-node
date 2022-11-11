@@ -1,91 +1,97 @@
 const PublisherRepository = require("../repositories/PublisherRepository");
 
-const publishers = new PublisherRepository();
+const publisher = new PublisherRepository();
 
 module.exports = class PublisherController {
   static async getPublishers(req, res) {
-    const { body } = req;
-
     try {
-      const data = await publishers.getAll(body);
+      const { body } = req;
+      const data = await publisher.getAll(body);
 
       if (!data.length) {
-        return res.status(404).json({ message: "nenhum dado foi retornado" });
+        return res.status(404).send({
+          message: "nenhum dado foi encontrado com o parâmetro informado",
+        });
       }
 
-      return res.status(200).json(data);
+      return res.status(200).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async getPublisherById(req, res) {
-    const { _id } = req.params;
-
     try {
-      const data = await publishers.getById(_id);
+      const { _id } = req.params;
+      const data = await publisher.getById(_id);
 
       if (!data) {
-        return res.status(404).json({ message: "nenhum dado foi retornado" });
+        return res.status(404).send({
+          message: "nenhum dado foi encontrado com o parâmetro informado",
+        });
       }
 
-      return res.status(200).json(data);
+      return res.status(200).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async setPublisher(req, res) {
-    const { body } = req;
-
     try {
-      const data = await publishers.set(body);
+      const { body } = req;
+      const data = await publisher.set(body);
 
       if (!data) {
         return res
           .status(400)
-          .json({ message: "há algo errado com o corpo da requisição" });
+          .send({ message: "há algo errado com os dados enviados" });
       }
 
-      return res.status(201).json(data);
+      return res.status(201).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async updatePublisherById(req, res) {
-    const { _id } = req.params;
-    const { body } = req;
-    let updateMessage;
-
     try {
-      const data = await publishers.updateById(_id, body);
+      const { _id } = req.params;
+      const { body } = req;
+      const update = await publisher.updateById(_id, body);
 
-      updateMessage = !data.modifiedCount
+      const updateMessage = !update.modifiedCount
         ? "Nenhum dado foi atualizado"
         : "Registro atualizado";
 
-      return res.status(200).json({ message: updateMessage, id: _id });
+      return res.status(200).send({ message: updateMessage, id: _id });
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async deletePublisherById(req, res) {
-    const { _id } = req.params;
-
     try {
-      const remove = await deletePublisherById({ _id });
+      const { _id } = req.params;
+      const remove = await publisher.deleteById({ _id });
 
       if (!remove.deletedCount) {
         return res
           .status(404)
-          .json({ message: "nenhum registro foi deletado" });
+          .send({ message: "nenhum registro foi deletado" });
       }
 
-      return res.status(200).json({ message: "registro deletado" });
+      return res.status(200).send({ message: "registro deletado com sucesso" });
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).send({ message: error.message });
     }
   }
 };
