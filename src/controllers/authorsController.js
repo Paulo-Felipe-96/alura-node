@@ -4,8 +4,10 @@ const authors = new AuthorRepository();
 
 module.exports = class AuthorController {
   static async getAuthors(req, res) {
+    const { body } = req;
+
     try {
-      const data = await authors.getAll();
+      const data = await authors.getAll(body);
 
       if (!data.length) {
         return res.status(404).json({ message: "nenhum dado foi retornado" });

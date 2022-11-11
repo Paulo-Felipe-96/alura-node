@@ -6,9 +6,9 @@ module.exports = class MainRepository {
     this.modelName = modelName;
   }
 
-  async getAll() {
+  async getAll(where = {}) {
     try {
-      return await db[this.modelName].find({});
+      return await db[this.modelName].find({ ...where });
     } catch (error) {
       throwError(error);
     }

@@ -4,8 +4,10 @@ const books = new BookRepository();
 
 module.exports = class BookController {
   static async getBooks(req, res) {
+    const { body } = req;
+
     try {
-      const data = await books.getBooks();
+      const data = await books.getBooks(body);
 
       return res.status(200).json({ data });
     } catch (error) {

@@ -4,8 +4,10 @@ const publishers = new PublisherRepository();
 
 module.exports = class PublisherController {
   static async getPublishers(req, res) {
+    const { body } = req;
+
     try {
-      const data = await publishers.getAll();
+      const data = await publishers.getAll(body);
 
       if (!data.length) {
         return res.status(404).json({ message: "nenhum dado foi retornado" });

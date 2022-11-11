@@ -7,9 +7,9 @@ module.exports = class BookRepository extends MainRepository {
     super("books");
   }
 
-  async getBooks() {
+  async getBooks(where = {}) {
     try {
-      return await db[this.modelName].find({}).populate(["autor", "editora"]);
+      return await db[this.modelName].find({ ...where }).populate(["autor", "editora"]);
     } catch (error) {
       throwError(error);
     }
