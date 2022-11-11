@@ -1,20 +1,13 @@
-const {
-  getBooks,
-  getBookById,
-  setBook,
-  updateBookById,
-  deleteBookById,
-  deleteManyBooksById,
-  getBooksByAuthorId,
-  getBooksByPublisherId,
-} = require("../repositories/BookRepository");
+const BookRepository = require("../repositories/BookRepository");
 
-class BookController {
+const books = new BookRepository();
+
+module.exports = class BookController {
   static async getBooks(req, res) {
     try {
-      const books = await getBooks();
+      const data = await books.getBooks();
 
-      return res.status(200).json({ books });
+      return res.status(200).json({ data });
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
@@ -24,9 +17,9 @@ class BookController {
     const { _id } = req.params;
 
     try {
-      const book = await getBookById(_id);
+      const data = await books.getBookById(_id);
 
-      return res.status(200).json({ book });
+      return res.status(200).json({ data });
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
@@ -36,7 +29,7 @@ class BookController {
     const { editora } = req.params;
 
     try {
-      const data = await getBooksByPublisherId(editora);
+      const data = await books.getBooksByPublisherId(editora);
 
       if (!data) {
         return res.status(404).json({ message: "nenhum dado foi retornado" });
@@ -52,7 +45,7 @@ class BookController {
     const { autor } = req.params;
 
     try {
-      const data = await getBooksByAuthorId(autor);
+      const data = await books.getBooksByAuthorId(autor);
 
       if (!data) {
         return res.status(404).json({ message: "nenhum dado foi retornado" });
@@ -68,7 +61,7 @@ class BookController {
     const { body } = req;
 
     try {
-      const data = await setBook(body);
+      const data = await books.set(body);
 
       if (!data) {
         return res
@@ -85,16 +78,16 @@ class BookController {
   static async updateBookById(req, res) {
     const { _id } = req.params;
     const data = req.body;
-    let isUpdated;
+    let updateMessage;
 
     try {
-      const update = await updateBookById(_id, data);
+      const update = await books.updateById(_id, data);
 
-      isUpdated = update.modifiedCount > 0
-        ? "Registro atualizado"
-        : "Nenhum dado foi atualizado";
+      updateMessage = !update.modifiedCount
+        ? "Nenhum dado foi atualizado"
+        : "Registro atualizado";
 
-      return res.status(200).json({ message: isUpdated, data });
+      return res.status(200).json({ message: updateMessage, data });
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
@@ -104,7 +97,7 @@ class BookController {
     const { _id } = req.params;
 
     try {
-      const remove = await deleteBookById({ _id });
+      const remove = await books.deleteById({ _id });
 
       if (!remove.deletedCount) {
         return res
@@ -122,20 +115,19 @@ class BookController {
     const { livros } = req.body;
 
     try {
-      if (Array.isArray(livros)) {
-        await deleteManyBooksById(livros);
-
-        res.status(200).json({ message: "processamento concluído" });
-      } else {
-        res.status(400).json({
-          message: "dados incorretos, por favor, verifique se o payload possui o formato indicado",
+      if (!Array.isArray(livros)) {
+        return res.status(400).json({
+          message:
+            "dados incorretos, por favor, verifique se o payload possui o formato indicado",
           format: "livros: [id]",
         });
       }
+
+      await books.deleteManyBooksById(livros);
+
+      return res.status(200).json({ message: "processamento concluído" });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   }
-}
-
-module.exports = BookController;
+};

@@ -1,17 +1,17 @@
-const {
-  getPublishers, getPublisherById, setPublisher, updatePublisherById, deletePublisherById,
-} = require("../repositories/PublisherRepository");
+const PublisherRepository = require("../repositories/PublisherRepository");
 
-class PublisherController {
+const publishers = new PublisherRepository();
+
+module.exports = class PublisherController {
   static async getPublishers(req, res) {
     try {
-      const publishers = await getPublishers();
+      const data = await publishers.getAll();
 
-      if (!publishers.length) {
+      if (!data.length) {
         return res.status(404).json({ message: "nenhum dado foi retornado" });
       }
 
-      return res.status(200).json(publishers);
+      return res.status(200).json(data);
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
@@ -21,13 +21,13 @@ class PublisherController {
     const { _id } = req.params;
 
     try {
-      const publishers = await getPublisherById(_id);
+      const data = await publishers.getById(_id);
 
-      if (!publishers) {
+      if (!data) {
         return res.status(404).json({ message: "nenhum dado foi retornado" });
       }
 
-      return res.status(200).json(publishers);
+      return res.status(200).json(data);
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
@@ -37,15 +37,15 @@ class PublisherController {
     const { body } = req;
 
     try {
-      const publisher = await setPublisher(body);
+      const data = await publishers.set(body);
 
-      if (!publisher) {
+      if (!data) {
         return res
           .status(400)
           .json({ message: "há algo errado com o corpo da requisição" });
       }
 
-      return res.status(201).json(publisher);
+      return res.status(201).json(data);
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
@@ -53,17 +53,17 @@ class PublisherController {
 
   static async updatePublisherById(req, res) {
     const { _id } = req.params;
-    const publisher = req.body;
-    let isUpdated;
+    const { body } = req;
+    let updateMessage;
 
     try {
-      const update = await updatePublisherById(_id, publisher);
+      const data = await publishers.updateById(_id, body);
 
-      isUpdated = update.modifiedCount > 0
-        ? "Registro atualizado"
-        : "Nenhum dado foi atualizado";
+      updateMessage = !data.modifiedCount
+        ? "Nenhum dado foi atualizado"
+        : "Registro atualizado";
 
-      return res.status(200).json({ message: isUpdated, id: _id });
+      return res.status(200).json({ message: updateMessage, id: _id });
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
@@ -86,6 +86,4 @@ class PublisherController {
       return res.status(500).json({ message: error.message });
     }
   }
-}
-
-module.exports = PublisherController;
+};

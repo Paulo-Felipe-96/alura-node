@@ -1,11 +1,11 @@
-const {
-  getAuthors, getAuthorById, setAuthor, updateAuthorById, deleteAuthorById,
-} = require("../repositories/AuthorRepository");
+const AuthorRepository = require("../repositories/AuthorRepository");
 
-class AuthorController {
+const authors = new AuthorRepository();
+
+module.exports = class AuthorController {
   static async getAuthors(req, res) {
     try {
-      const data = await getAuthors();
+      const data = await authors.getAll();
 
       if (!data.length) {
         return res.status(404).json({ message: "nenhum dado foi retornado" });
@@ -21,7 +21,7 @@ class AuthorController {
     const { _id } = req.params;
 
     try {
-      const data = await getAuthorById(_id);
+      const data = await authors.getById(_id);
 
       if (!data) {
         return res.status(404).json({ message: "nenhum dado foi retornado" });
@@ -37,7 +37,7 @@ class AuthorController {
     const { body } = req;
 
     try {
-      const data = await setAuthor(body);
+      const data = await authors.set(body);
 
       if (!data) {
         return res
@@ -53,17 +53,17 @@ class AuthorController {
 
   static async updateAuthorById(req, res) {
     const { _id } = req.params;
-    const data = req.body;
-    let isUpdated;
+    const { body } = req;
+    let updateMessage;
 
     try {
-      const update = await updateAuthorById(_id, data);
+      const update = await authors.updateById(_id, body);
 
-      isUpdated = update.modifiedCount > 0
+      updateMessage = update.modifiedCount > 0
         ? "Registro atualizado"
         : "Nenhum dado foi atualizado";
 
-      return res.status(200).json({ message: isUpdated, id: _id });
+      return res.status(200).json({ message: updateMessage, id: _id });
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
@@ -73,7 +73,7 @@ class AuthorController {
     const { _id } = req.params;
 
     try {
-      const remove = await deleteAuthorById({ _id });
+      const remove = await authors.deleteById({ _id });
 
       if (!remove.deletedCount) {
         return res
@@ -86,6 +86,4 @@ class AuthorController {
       return res.status(500).json({ message: error.message });
     }
   }
-}
-
-module.exports = AuthorController;
+};
