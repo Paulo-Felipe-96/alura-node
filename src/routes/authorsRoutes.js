@@ -1,13 +1,11 @@
 const { Router } = require("express");
-const AuthorControler = require("../controllers/authorsController");
-
 const {
   getAuthors,
   getAuthorById,
   updateAuthorById,
   setAuthor,
   deleteAuthorById,
-} = AuthorControler;
+} = require("../controllers/authorsController");
 
 const router = Router();
 
