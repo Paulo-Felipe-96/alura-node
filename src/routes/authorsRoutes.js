@@ -13,9 +13,9 @@ const router = Router();
 
 router
   .get("/autores", getAuthors)
-  .get("/autor/:_id", getAuthorById)
+  .get("/autores/:_id", getAuthorById)
   .post("/autores", setAuthor)
-  .put("/autor/:_id", updateAuthorById)
-  .delete("/autor/:_id", deleteAuthorById);
+  .put("/autores/:_id", updateAuthorById)
+  .delete("/autores/:_id", deleteAuthorById);
 
 module.exports = router;
