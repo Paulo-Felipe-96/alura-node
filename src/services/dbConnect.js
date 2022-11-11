@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const { connect, connection } = require("mongoose");
 const {
   mongoDbUserName,
   mongoDbPassword,
@@ -6,8 +6,6 @@ const {
   dbName,
 } = require("../config");
 const handleError = require("../helpers/throwError");
-
-const { connect, connection } = mongoose;
 
 async function connectToDb() {
   try {
