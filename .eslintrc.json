@@ -1,7 +1,11 @@
 {
   "settings": {
     "import/resolver": {
-      "alias": []
+      "alias": [
+        ["@root", "./"],
+        ["controllers", "./src/controllers"],
+        ["helpers", "./src/helpers"]
+      ]
     }
   },
   "env": {

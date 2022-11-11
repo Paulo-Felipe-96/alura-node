@@ -1,71 +1,51 @@
-const books = require("../models/Book");
+const MainRepository = require("./MainRepository");
+const db = require("../models");
+const throwError = require("../helpers/throwError");
 
-class BookRepository {
-  static async getBooks() {
+module.exports = class BookRepository extends MainRepository {
+  constructor() {
+    super("books");
+  }
+
+  async getBooks(where = {}) {
     try {
-      return await books.find({}).populate(["autor", "editora"]);
+      return await db[this.modelName].find({ ...where }).populate(["autor", "editora"]);
     } catch (error) {
-      throw new Error(error);
+      throwError(error);
     }
   }
 
-  static async getBookById(_id) {
+  async getBookById(_id) {
     try {
-      return await books.findById({ _id }).populate(["autor", "editora"]);
+      return await db[this.modelName].findById({ _id }).populate(["autor", "editora"]);
     } catch (error) {
-      throw new Error(error);
+      throwError(error);
     }
   }
 
-  static async getBooksByAuthorId(author) {
+  async getBooksByAuthorId(author) {
     try {
-      return await books.find({ autor: author }).populate(["autor", "editora"]);
+      return await db[this.modelName].find({ autor: author }).populate(["autor", "editora"]);
     } catch (error) {
-      throw new Error(error);
+      throwError(error);
     }
   }
 
-  static async getBooksByPublisherId(publisher) {
+  async getBooksByPublisherId(publisher) {
     try {
-      return await books
+      return await db[this.modelName]
         .find({ editora: publisher })
         .populate(["autor", "editora"]);
     } catch (error) {
-      throw new Error(error);
+      throwError(error);
     }
   }
 
-  static async setBook(data) {
+  async deleteManyBooksById(booksCollection) {
     try {
-      return await new books(data).save();
+      return await db[this.modelName].deleteMany({ _id: booksCollection });
     } catch (error) {
-      throw new Error(error);
+      throwError(error);
     }
   }
-
-  static async updateBookById(_id, data) {
-    try {
-      return await books.updateOne({ _id }, { $set: data });
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  static async deleteBookById(_id) {
-    try {
-      return await books.remove({ _id });
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  static async deleteManyBooksById(booksCollection) {
-    try {
-      return await books.deleteMany({ _id: booksCollection });
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-}
-
-module.exports = BookRepository;
+};

@@ -1,6 +1,6 @@
 const express = require("express");
 const dbConnect = require("../services/dbConnect");
-const handleError = require("../helpers/handleError");
+const throwError = require("../helpers/throwError");
 const routes = require("../routes");
 
 const app = express();
@@ -8,7 +8,7 @@ const app = express();
 try {
   routes(app);
 } catch (error) {
-  handleError(error);
+  throwError(error);
 }
 
 module.exports = app;

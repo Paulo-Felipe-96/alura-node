@@ -1,91 +1,97 @@
-const {
-  getAuthors, getAuthorById, setAuthor, updateAuthorById, deleteAuthorById,
-} = require("../repositories/AuthorRepository");
+const AuthorRepository = require("../repositories/AuthorRepository");
 
-class AuthorController {
+const authors = new AuthorRepository();
+
+module.exports = class AuthorController {
   static async getAuthors(req, res) {
     try {
-      const data = await getAuthors();
+      const { body } = req;
+      const data = await authors.getAll(body);
 
       if (!data.length) {
-        return res.status(404).json({ message: "nenhum dado foi retornado" });
+        return res.status(404).send({
+          message: "nenhum dado foi encontrado com o parâmetro informado",
+        });
       }
 
-      return res.status(200).json(data);
+      return res.status(200).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async getAuthorById(req, res) {
-    const { _id } = req.params;
-
     try {
-      const data = await getAuthorById(_id);
+      const { _id } = req.params;
+      const data = await authors.getById(_id);
 
       if (!data) {
-        return res.status(404).json({ message: "nenhum dado foi retornado" });
+        return res.status(404).send({
+          message: "nenhum dado foi encontrado com o parâmetro informado",
+        });
       }
 
-      return res.status(200).json(data);
+      return res.status(200).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async setAuthor(req, res) {
-    const { body } = req;
-
     try {
-      const data = await setAuthor(body);
+      const { body } = req;
+      const data = await authors.set(body);
 
       if (!data) {
         return res
           .status(400)
-          .json({ message: "há algo errado com o corpo da requisição" });
+          .send({ message: "há algo errado com os dados enviados" });
       }
 
-      return res.status(201).json(data);
+      return res.status(201).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async updateAuthorById(req, res) {
-    const { _id } = req.params;
-    const data = req.body;
-    let isUpdated;
-
     try {
-      const update = await updateAuthorById(_id, data);
+      const { _id } = req.params;
+      const { body } = req;
+      const update = await authors.updateById(_id, body);
 
-      isUpdated = update.modifiedCount > 0
-        ? "Registro atualizado"
-        : "Nenhum dado foi atualizado";
+      const updateMessage = !update.modifiedCount
+        ? "Nenhum dado foi atualizado"
+        : "Registro atualizado";
 
-      return res.status(200).json({ message: isUpdated, id: _id });
+      return res.status(200).send({ message: updateMessage, id: _id });
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async deleteAuthorById(req, res) {
-    const { _id } = req.params;
-
     try {
-      const remove = await deleteAuthorById({ _id });
+      const { _id } = req.params;
+      const remove = await authors.deleteById({ _id });
 
       if (!remove.deletedCount) {
         return res
           .status(404)
-          .json({ message: "nenhum registro foi deletado" });
+          .send({ message: "nenhum registro foi deletado" });
       }
 
-      return res.status(200).json({ message: "registro deletado" });
+      return res.status(200).send({ message: "registro deletado com sucesso" });
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).send({ message: error.message });
     }
   }
-}
-
-module.exports = AuthorController;
+};

@@ -1,141 +1,153 @@
-const {
-  getBooks,
-  getBookById,
-  setBook,
-  updateBookById,
-  deleteBookById,
-  deleteManyBooksById,
-  getBooksByAuthorId,
-  getBooksByPublisherId,
-} = require("../repositories/BookRepository");
+const BookRepository = require("../repositories/BookRepository");
 
-class BookController {
+const books = new BookRepository();
+
+module.exports = class BookController {
   static async getBooks(req, res) {
     try {
-      const books = await getBooks();
+      const { body } = req;
+      const data = await books.getBooks(body);
 
-      return res.status(200).json({ books });
+      if (!data.length) {
+        return res.status(404).send({
+          message: "nenhum dado foi encontrado com o parâmetro informado",
+        });
+      }
+
+      return res.status(200).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async getBookById(req, res) {
-    const { _id } = req.params;
-
     try {
-      const book = await getBookById(_id);
+      const { _id } = req.params;
+      const data = await books.getBookById(_id);
 
-      return res.status(200).json({ book });
+      return res.status(200).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async findBookByPublisherId(req, res) {
-    const { editora } = req.params;
-
     try {
-      const data = await getBooksByPublisherId(editora);
+      const { editora } = req.params;
+      const data = await books.getBooksByPublisherId(editora);
 
       if (!data) {
-        return res.status(404).json({ message: "nenhum dado foi retornado" });
+        return res.status(404).send({
+          message: "nenhum dado foi encontrado com o parâmetro informado",
+        });
       }
 
-      return res.status(200).json(data);
+      return res.status(200).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async findBookByAuthorId(req, res) {
-    const { autor } = req.params;
-
     try {
-      const data = await getBooksByAuthorId(autor);
+      const { autor } = req.params;
+      const data = await books.getBooksByAuthorId(autor);
 
       if (!data) {
-        return res.status(404).json({ message: "nenhum dado foi retornado" });
+        return res.status(404).send({
+          message: "nenhum dado foi encontrado com o parâmetro informado",
+        });
       }
 
-      return res.status(200).json({ data });
+      return res.status(200).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async setBook(req, res) {
-    const { body } = req;
-
     try {
-      const data = await setBook(body);
+      const { body } = req;
+      const data = await books.set(body);
 
       if (!data) {
         return res
           .status(400)
-          .json({ message: "há algo errado com o corpo da requisição" });
+          .send({ message: "há algo errado com os dados enviados" });
       }
 
-      return res.status(201).json({ data });
+      return res.status(201).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async updateBookById(req, res) {
-    const { _id } = req.params;
-    const data = req.body;
-    let isUpdated;
-
     try {
-      const update = await updateBookById(_id, data);
+      const { _id } = req.params;
+      const { body } = req;
+      const update = await books.updateById(_id, body);
 
-      isUpdated = update.modifiedCount > 0
-        ? "Registro atualizado"
-        : "Nenhum dado foi atualizado";
+      const updateMessage = !update.modifiedCount
+        ? "Nenhum dado foi atualizado"
+        : "Registro atualizado";
 
-      return res.status(200).json({ message: isUpdated, data });
+      return res.status(200).send({ message: updateMessage, body });
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async deleteBookById(req, res) {
-    const { _id } = req.params;
-
     try {
-      const remove = await deleteBookById({ _id });
+      const { _id } = req.params;
+      const remove = await books.deleteById({ _id });
 
       if (!remove.deletedCount) {
         return res
           .status(404)
-          .json({ message: "nenhum registro foi deletado" });
+          .send({ message: "nenhum registro foi deletado" });
       }
 
-      return res.status(200).json({ message: "registro deletado" });
+      return res.status(200).send({ message: "registro deletado com sucesso" });
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async deleteManyBooksById(req, res) {
-    const { livros } = req.body;
-
     try {
-      if (Array.isArray(livros)) {
-        await deleteManyBooksById(livros);
+      const { livros } = req.body;
 
-        res.status(200).json({ message: "processamento concluído" });
-      } else {
-        res.status(400).json({
-          message: "dados incorretos, por favor, verifique se o payload possui o formato indicado",
+      if (!Array.isArray(livros)) {
+        return res.status(400).send({
+          message:
+            "dados incorretos, por favor, verifique se o payload possui o formato indicado",
           format: "livros: [id]",
         });
       }
+
+      await books.deleteManyBooksById(livros);
+
+      return res.status(200).send({ message: "processamento concluído" });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
-}
-
-module.exports = BookController;
+};

@@ -1,91 +1,97 @@
-const {
-  getPublishers, getPublisherById, setPublisher, updatePublisherById, deletePublisherById,
-} = require("../repositories/PublisherRepository");
+const PublisherRepository = require("../repositories/PublisherRepository");
 
-class PublisherController {
+const publisher = new PublisherRepository();
+
+module.exports = class PublisherController {
   static async getPublishers(req, res) {
     try {
-      const publishers = await getPublishers();
+      const { body } = req;
+      const data = await publisher.getAll(body);
 
-      if (!publishers.length) {
-        return res.status(404).json({ message: "nenhum dado foi retornado" });
+      if (!data.length) {
+        return res.status(404).send({
+          message: "nenhum dado foi encontrado com o parâmetro informado",
+        });
       }
 
-      return res.status(200).json(publishers);
+      return res.status(200).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async getPublisherById(req, res) {
-    const { _id } = req.params;
-
     try {
-      const publishers = await getPublisherById(_id);
+      const { _id } = req.params;
+      const data = await publisher.getById(_id);
 
-      if (!publishers) {
-        return res.status(404).json({ message: "nenhum dado foi retornado" });
+      if (!data) {
+        return res.status(404).send({
+          message: "nenhum dado foi encontrado com o parâmetro informado",
+        });
       }
 
-      return res.status(200).json(publishers);
+      return res.status(200).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async setPublisher(req, res) {
-    const { body } = req;
-
     try {
-      const publisher = await setPublisher(body);
+      const { body } = req;
+      const data = await publisher.set(body);
 
-      if (!publisher) {
+      if (!data) {
         return res
           .status(400)
-          .json({ message: "há algo errado com o corpo da requisição" });
+          .send({ message: "há algo errado com os dados enviados" });
       }
 
-      return res.status(201).json(publisher);
+      return res.status(201).send(data);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async updatePublisherById(req, res) {
-    const { _id } = req.params;
-    const publisher = req.body;
-    let isUpdated;
-
     try {
-      const update = await updatePublisherById(_id, publisher);
+      const { _id } = req.params;
+      const { body } = req;
+      const update = await publisher.updateById(_id, body);
 
-      isUpdated = update.modifiedCount > 0
-        ? "Registro atualizado"
-        : "Nenhum dado foi atualizado";
+      const updateMessage = !update.modifiedCount
+        ? "Nenhum dado foi atualizado"
+        : "Registro atualizado";
 
-      return res.status(200).json({ message: isUpdated, id: _id });
+      return res.status(200).send({ message: updateMessage, id: _id });
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 
   static async deletePublisherById(req, res) {
-    const { _id } = req.params;
-
     try {
-      const remove = await deletePublisherById({ _id });
+      const { _id } = req.params;
+      const remove = await publisher.deleteById({ _id });
 
       if (!remove.deletedCount) {
         return res
           .status(404)
-          .json({ message: "nenhum registro foi deletado" });
+          .send({ message: "nenhum registro foi deletado" });
       }
 
-      return res.status(200).json({ message: "registro deletado" });
+      return res.status(200).send({ message: "registro deletado com sucesso" });
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).send({ message: error.message });
     }
   }
-}
-
-module.exports = PublisherController;
+};
