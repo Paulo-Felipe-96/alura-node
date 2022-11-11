@@ -1,13 +1,26 @@
 {
   "verbose": true,
   "collectCoverage": true,
-  "collectCoverageFrom": ["./src/**", "!**/app/**"],
+  "coveragePathIgnorePatterns": [
+    "/node_modules/"
+  ],
+  "collectCoverageFrom": [
+    "./src/**",
+    "!**/__tests__/**",
+    "!**/__tests__/**/*.(j|t)s",
+    "!**/app/**",
+    "!**/config/**",
+    "!**/database/**",
+    "!**/server.(j|t)s",
+    "!**/models/**",
+    "**/models/helpers/**"
+  ],
   "coverageThreshold": {
     "global": {
-      "branches": 80,
+      "branches": 50,
       "functions": 80,
       "lines": 80
     }
   },
-  "testTimeout": 50000
+  "modulePathIgnorePatterns": ["mocks"]
 }
