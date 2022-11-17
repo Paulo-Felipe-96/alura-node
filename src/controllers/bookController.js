@@ -27,6 +27,12 @@ module.exports = class BookController {
       const { _id } = req.params;
       const data = await books.getBookById(_id);
 
+      if (!data) {
+        return res.status(404).send({
+          message: "nenhum dado foi encontrado com o parâmetro informado",
+        });
+      }
+
       return res.status(200).send(data);
     } catch (error) {
       const errorMessage = !error.errors ? error.message : error.errors;
