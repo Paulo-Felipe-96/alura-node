@@ -4,7 +4,7 @@ const throwError = require("./helpers/throwError");
 
 async function server(port) {
   try {
-    return app.listen(port, () => console.log(`Server is now running on: 'http://localhost:${port}'`));
+    return app.listen(port, () => console.log(`Server is now running at: 'http://localhost:${port}'`));
   } catch (error) {
     throwError(error);
   }
