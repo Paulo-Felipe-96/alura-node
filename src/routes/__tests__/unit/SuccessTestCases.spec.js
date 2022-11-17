@@ -2,9 +2,9 @@ const request = require("supertest");
 const app = require("../../../app");
 const {
   succeededScenariosForGet,
-} = require("../mocks/SucceededResponseForGetMock");
+} = require("../mocks/SuccessTestCasesMock");
 
-describe("GET all base endpoints for for Livros, Editoras and Autores", () => {
+describe("Well succeeded Router test cases for Livros, Editoras and Autores", () => {
   test.each(succeededScenariosForGet)(
     "$title",
     async ({ path }) => {
