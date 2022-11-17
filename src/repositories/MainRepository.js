@@ -40,7 +40,7 @@ module.exports = class MainRepository {
 
   async deleteById(_id) {
     try {
-      return await model[this.modelName].remove({ _id });
+      return await model[this.modelName].deleteOne({ _id });
     } catch (error) {
       throwError(error);
     }
