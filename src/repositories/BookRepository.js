@@ -1,5 +1,5 @@
 const MainRepository = require("./MainRepository");
-const db = require("../models");
+const model = require("../models");
 const throwError = require("../helpers/throwError");
 
 module.exports = class BookRepository extends MainRepository {
@@ -9,7 +9,7 @@ module.exports = class BookRepository extends MainRepository {
 
   async getBooks(where = {}) {
     try {
-      return await db[this.modelName].find({ ...where }).populate(["autor", "editora"]);
+      return await model[this.modelName].find({ ...where }).populate(["autor", "editora"]);
     } catch (error) {
       throwError(error);
     }
@@ -17,7 +17,7 @@ module.exports = class BookRepository extends MainRepository {
 
   async getBookById(_id) {
     try {
-      return await db[this.modelName].findById({ _id }).populate(["autor", "editora"]);
+      return await model[this.modelName].findById({ _id }).populate(["autor", "editora"]);
     } catch (error) {
       throwError(error);
     }
@@ -25,7 +25,7 @@ module.exports = class BookRepository extends MainRepository {
 
   async getBooksByAuthorId(author) {
     try {
-      return await db[this.modelName].find({ autor: author }).populate(["autor", "editora"]);
+      return await model[this.modelName].find({ autor: author }).populate(["autor", "editora"]);
     } catch (error) {
       throwError(error);
     }
@@ -33,7 +33,7 @@ module.exports = class BookRepository extends MainRepository {
 
   async getBooksByPublisherId(publisher) {
     try {
-      return await db[this.modelName]
+      return await model[this.modelName]
         .find({ editora: publisher })
         .populate(["autor", "editora"]);
     } catch (error) {
@@ -43,7 +43,7 @@ module.exports = class BookRepository extends MainRepository {
 
   async deleteManyBooksById(booksCollection) {
     try {
-      return await db[this.modelName].deleteMany({ _id: booksCollection });
+      return await model[this.modelName].deleteMany({ _id: booksCollection });
     } catch (error) {
       throwError(error);
     }
