@@ -12,7 +12,7 @@
     "!**/config/**",
     "!**/database/**",
     "!**/server.(j|t)s",
-    "!**/models/**",
+    "**/models/**",
     "**/models/helpers/**"
   ],
   "coverageThreshold": {
