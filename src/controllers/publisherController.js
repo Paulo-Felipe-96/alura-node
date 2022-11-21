@@ -91,7 +91,9 @@ module.exports = class PublisherController {
 
       return res.status(200).send({ message: "registro deletado com sucesso" });
     } catch (error) {
-      return res.status(500).send({ message: error.message });
+      const errorMessage = !error.errors ? error.message : error.errors;
+
+      return res.status(500).send({ message: errorMessage });
     }
   }
 };
