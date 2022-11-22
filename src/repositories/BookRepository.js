@@ -9,7 +9,9 @@ module.exports = class BookRepository extends MainRepository {
 
   async getBooks(where = {}) {
     try {
-      return await model[this.modelName].find({ ...where }).populate(["autor", "editora"]);
+      return await model[this.modelName]
+        .find({ ...where })
+        .populate(["autor", "editora"]);
     } catch (error) {
       throwError(error);
     }
@@ -17,24 +19,28 @@ module.exports = class BookRepository extends MainRepository {
 
   async getBookById(_id) {
     try {
-      return await model[this.modelName].findById({ _id }).populate(["autor", "editora"]);
+      return await model[this.modelName]
+        .findById({ _id })
+        .populate(["autor", "editora"]);
     } catch (error) {
       throwError(error);
     }
   }
 
-  async getBooksByAuthorId(author) {
-    try {
-      return await model[this.modelName].find({ autor: author }).populate(["autor", "editora"]);
-    } catch (error) {
-      throwError(error);
-    }
-  }
-
-  async getBooksByPublisherId(publisher) {
+  async getBooksByAuthorId(autor) {
     try {
       return await model[this.modelName]
-        .find({ editora: publisher })
+        .find({ autor })
+        .populate(["autor", "editora"]);
+    } catch (error) {
+      throwError(error);
+    }
+  }
+
+  async getBooksByPublisherId(editora) {
+    try {
+      return await model[this.modelName]
+        .find({ editora })
         .populate(["autor", "editora"]);
     } catch (error) {
       throwError(error);
