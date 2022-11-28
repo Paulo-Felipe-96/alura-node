@@ -10,7 +10,6 @@ describe("Author's model tests", () => {
     const author = new Author(authorObj);
 
     expect(author).toEqual(expect.objectContaining(authorObj));
-    console.log(author);
   });
 
   it("should have props: id, name and nationality", () => {
