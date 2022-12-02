@@ -10,10 +10,10 @@ const {
 const router = Router();
 
 router
-  .get("/editoras", getPublishers)
-  .get("/editoras/:_id", getPublisherById)
-  .post("/editoras", setPublisher)
-  .put("/editoras/:_id", updatePublisherById)
-  .delete("/editoras/:_id", deletePublisherById);
+  .get("/library/editoras", getPublishers)
+  .get("/library/editoras/:_id", getPublisherById)
+  .post("/library/editoras", setPublisher)
+  .put("/library/editoras/:_id", updatePublisherById)
+  .delete("/library/editoras/:_id", deletePublisherById);
 
 module.exports = router;

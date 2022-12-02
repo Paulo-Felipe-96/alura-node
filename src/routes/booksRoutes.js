@@ -13,13 +13,13 @@ const {
 const router = Router();
 
 router
-  .get("/livros", getBooks)
-  .get("/livros/editora/:editora", findBookByPublisherId)
-  .get("/livros/autor/:autor", findBookByAuthorId)
-  .get("/livros/:_id", getBookById)
-  .post("/livros", setBook)
-  .put("/livros/:_id", updateBookById)
-  .delete("/livros/", deleteManyBooksById)
-  .delete("/livros/:_id", deleteBookById);
+  .get("/library/livros", getBooks)
+  .get("/library/livros/editora/:editora", findBookByPublisherId)
+  .get("/library/livros/autor/:autor", findBookByAuthorId)
+  .get("/library/livros/:_id", getBookById)
+  .post("/library/livros", setBook)
+  .put("/library/livros/:_id", updateBookById)
+  .delete("/library/livros/", deleteManyBooksById)
+  .delete("/library/livros/:_id", deleteBookById);
 
 module.exports = router;

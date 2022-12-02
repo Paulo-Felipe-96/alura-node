@@ -1,4 +1,4 @@
-const baseUrl = "/";
+const baseUrl = "/library/";
 const editora = "editora";
 const livro = "livro";
 const autor = "autor";
