@@ -4,7 +4,7 @@ const books = require("./booksRoutes");
 const publishers = require("./publisherRoutes");
 
 const routes = (app) => {
-  app.route("/library/").get((req, res) => res.status(200).json({
+  app.route("/library/").get((req, res) => res.status(200).send({
     status: 200,
     message: `Welcome to bookstore API. See the endpoints in this repo:
       https://github.com/Paulo-Felipe-96/bookstore-api/tree/main/__endpoints__`,
