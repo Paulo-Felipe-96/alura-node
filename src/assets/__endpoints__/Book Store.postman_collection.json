@@ -15,7 +15,13 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"nascionalidade\": \"Americana\"\n}",
@@ -41,7 +47,13 @@
 					"name": "author by id",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{dev}}/autores/:id",
 							"host": [
@@ -54,7 +66,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "62af9c9a5809e5fb48f09620"
+									"value": "6393a0343032623b800ca85a"
 								}
 							]
 						}
@@ -65,10 +77,16 @@
 					"name": "include author",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Oscar Wilde\",\n    \"nascionalidade\": \"Francesa\"\n}",
+							"raw": "{\n    \"nome\": \"Flight Simulator\",\n    \"nascionalidade\": \"Francesa\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -91,7 +109,13 @@
 					"name": "update author by id",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"nome\": \"Robert C. Martin\"\n}",
@@ -113,7 +137,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6334b76ae6a69c42df824542"
+									"value": "6393a0343032623b800ca85a"
 								}
 							]
 						}
@@ -124,7 +148,13 @@
 					"name": "delete author by id",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{dev}}/autores/:id",
 							"host": [
@@ -137,7 +167,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "63877a95f0034b599a8005c9"
+									"value": "6393a0a73032623b800ca86c"
 								}
 							]
 						}
@@ -566,7 +596,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "123",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{dev}}/",
 					"host": [
