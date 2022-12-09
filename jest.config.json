@@ -6,6 +6,7 @@
   ],
   "collectCoverageFrom": [
     "./src/**",
+    "!**/assets/**",
     "!**/__tests__/**",
     "!**/__tests__/**/*.(j|t)s",
     "!**/app/**",
