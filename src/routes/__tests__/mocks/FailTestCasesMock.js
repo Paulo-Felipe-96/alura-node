@@ -9,7 +9,7 @@ const autores = "autores";
 const badScenariosForDelete = [
   {
     title: "should return status code 404 when requesting a non-existent route endpoint",
-    path: `${baseUrl}`,
+    path: "/",
   },
   {
     title: "should return status code 404 when requesting a non-existent route editora",
