@@ -1,11 +1,22 @@
 const AuthorRepository = require("../repositories/AuthorRepository");
+const AuthorizationRepository = require("../repositories/AuthorizationRepository");
 
 const authors = new AuthorRepository();
+const auth = new AuthorizationRepository("auth");
 
 module.exports = class AuthorController {
   static async getAuthors(req, res) {
     try {
       const { body } = req;
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
+
       const data = await authors.getAll(body);
 
       if (!data.length) {
@@ -25,6 +36,15 @@ module.exports = class AuthorController {
   static async getAuthorById(req, res) {
     try {
       const { _id } = req.params;
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
+
       const data = await authors.getById(_id);
 
       if (!data) {
@@ -44,6 +64,15 @@ module.exports = class AuthorController {
   static async setAuthor(req, res) {
     try {
       const { body } = req;
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
+
       const data = await authors.set(body);
 
       if (!data) {
@@ -64,6 +93,15 @@ module.exports = class AuthorController {
     try {
       const { _id } = req.params;
       const { body } = req;
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
+
       const update = await authors.updateById(_id, body);
 
       const updateMessage = !update.modifiedCount
@@ -81,6 +119,15 @@ module.exports = class AuthorController {
   static async deleteAuthorById(req, res) {
     try {
       const { _id } = req.params;
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
+
       const remove = await authors.deleteById({ _id });
 
       if (!remove.deletedCount) {
