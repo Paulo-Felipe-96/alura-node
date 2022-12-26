@@ -16,9 +16,9 @@ module.exports = class BookController {
 
       return res.status(200).send(data);
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 
@@ -35,9 +35,9 @@ module.exports = class BookController {
 
       return res.status(200).send(data);
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 
@@ -54,9 +54,9 @@ module.exports = class BookController {
 
       return res.status(200).send(data);
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 
@@ -73,9 +73,9 @@ module.exports = class BookController {
 
       return res.status(200).send(data);
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 
@@ -92,9 +92,9 @@ module.exports = class BookController {
 
       return res.status(201).send(data);
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 
@@ -102,26 +102,26 @@ module.exports = class BookController {
     try {
       const { _id } = req.params;
       const { body } = req;
-      const update = await books.updateById(_id, body);
+      const { modifiedCount } = await books.updateById(_id, body);
 
-      const updateMessage = !update.modifiedCount
+      const message = !modifiedCount
         ? "Nenhum dado foi atualizado"
         : "Registro atualizado";
 
-      return res.status(200).send({ message: updateMessage, body });
+      return res.status(200).send({ message, body });
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 
   static async deleteBookById(req, res) {
     try {
       const { _id } = req.params;
-      const remove = await books.deleteById({ _id });
+      const { deletedCount } = await books.deleteById({ _id });
 
-      if (!remove.deletedCount) {
+      if (!deletedCount) {
         return res
           .status(404)
           .send({ message: "nenhum registro foi deletado" });
@@ -129,9 +129,9 @@ module.exports = class BookController {
 
       return res.status(200).send({ message: "registro deletado com sucesso" });
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 
@@ -151,9 +151,9 @@ module.exports = class BookController {
 
       return res.status(200).send({ message: "processamento concluído" });
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 };

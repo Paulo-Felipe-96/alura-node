@@ -16,9 +16,9 @@ module.exports = class PublisherController {
 
       return res.status(200).send(data);
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 
@@ -35,9 +35,9 @@ module.exports = class PublisherController {
 
       return res.status(200).send(data);
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 
@@ -54,9 +54,9 @@ module.exports = class PublisherController {
 
       return res.status(201).send(data);
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 
@@ -64,26 +64,26 @@ module.exports = class PublisherController {
     try {
       const { _id } = req.params;
       const { body } = req;
-      const update = await publisher.updateById(_id, body);
+      const { modifiedCount } = await publisher.updateById(_id, body);
 
-      const updateMessage = !update.modifiedCount
+      const message = !modifiedCount
         ? "Nenhum dado foi atualizado"
         : "Registro atualizado";
 
-      return res.status(200).send({ message: updateMessage, id: _id });
+      return res.status(200).send({ message, _id });
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 
   static async deletePublisherById(req, res) {
     try {
       const { _id } = req.params;
-      const remove = await publisher.deleteById({ _id });
+      const { deletedCount } = await publisher.deleteById({ _id });
 
-      if (!remove.deletedCount) {
+      if (!deletedCount) {
         return res
           .status(404)
           .send({ message: "nenhum registro foi deletado" });
@@ -91,9 +91,9 @@ module.exports = class PublisherController {
 
       return res.status(200).send({ message: "registro deletado com sucesso" });
     } catch (error) {
-      const errorMessage = !error.errors ? error.message : error.errors;
+      const message = !error.errors ? error.message : error.errors;
 
-      return res.status(500).send({ message: errorMessage });
+      return res.status(500).send({ message });
     }
   }
 };
