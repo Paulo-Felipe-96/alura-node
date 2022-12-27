@@ -1,4 +1,4 @@
-const auth = require("../models/Authorization");
+const model = require("../models");
 const throwError = require("../helpers/throwError");
 
 module.exports = class AuthorizationRepository {
@@ -8,7 +8,7 @@ module.exports = class AuthorizationRepository {
 
   async getToken(authToken) {
     try {
-      return await auth.findOne({ authToken });
+      return !!await model[this.modelName].findOne({ authToken });
     } catch (error) {
       throwError(error);
     }
