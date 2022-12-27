@@ -81,7 +81,7 @@ module.exports = class PublisherController {
   static async deletePublisherById(req, res) {
     try {
       const { _id } = req.params;
-      const { deletedCount } = await publisher.deleteById({ _id });
+      const { deletedCount } = await publisher.deleteById(_id);
 
       if (!deletedCount) {
         return res

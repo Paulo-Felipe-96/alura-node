@@ -119,7 +119,7 @@ module.exports = class BookController {
   static async deleteBookById(req, res) {
     try {
       const { _id } = req.params;
-      const { deletedCount } = await books.deleteById({ _id });
+      const { deletedCount } = await books.deleteById(_id);
 
       if (!deletedCount) {
         return res

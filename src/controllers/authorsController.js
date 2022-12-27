@@ -128,7 +128,7 @@ module.exports = class AuthorController {
         });
       }
 
-      const { deletedCount } = await authors.deleteById({ _id });
+      const { deletedCount } = await authors.deleteById(_id);
 
       if (!deletedCount) {
         return res
