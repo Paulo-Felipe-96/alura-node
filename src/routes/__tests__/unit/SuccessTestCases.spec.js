@@ -1,4 +1,5 @@
 const request = require("supertest");
+const { authorization } = require("../../../config");
 const app = require("../../../app");
 const {
   succeededScenariosForGet,
@@ -11,6 +12,7 @@ describe("Well succeeded Router test cases for Livros, Editoras and Autores", ()
       await request(app)
         .get(path)
         .set("Accept", "application/json")
+        .set("Authorization", `${authorization}`)
         .expect("Content-Type", "application/json; charset=utf-8")
         .expect(200);
     },

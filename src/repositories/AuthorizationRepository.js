@@ -8,7 +8,7 @@ module.exports = class AuthorizationRepository {
 
   async getToken(authToken) {
     try {
-      return !!await model[this.modelName].findOne({ authToken });
+      return !!(await model[this.modelName].findOne({ authToken }));
     } catch (error) {
       throwError(error);
     }

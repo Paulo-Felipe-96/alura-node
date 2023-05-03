@@ -1,6 +1,11 @@
 const request = require("supertest");
+const { config } = require("dotenv");
+const { authorization } = require("../../../config");
 const app = require("../../../app");
-const { badScenariosForDelete, badScenariosForPost } = require("../mocks/FailTestCasesMock");
+const {
+  badScenariosForDelete,
+  badScenariosForPost,
+} = require("../mocks/FailTestCasesMock");
 
 describe("Router test cases for fails in Livros, Editoras and Autores", () => {
   test.each(badScenariosForDelete)("$title", async ({ path }) => {
@@ -15,6 +20,7 @@ describe("Router test cases for fails in Livros, Editoras and Autores", () => {
     await request(app)
       .post(path)
       .set("Accept", "application/json")
+      .set("Authorization", `${authorization}`)
       .expect("Content-Type", "application/json; charset=utf-8")
       .expect(500);
   });
