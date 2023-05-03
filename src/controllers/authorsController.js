@@ -37,7 +37,7 @@ module.exports = class AuthorController {
     try {
       const { _id } = req.params;
       const { authorization } = req.headers;
-      const authorized = await auth.getToken(authorization)
+      const authorized = await auth.getToken(authorization);
 
       if (!authorized) {
         return res.status(403).send({
@@ -65,7 +65,7 @@ module.exports = class AuthorController {
     try {
       const { body } = req;
       const { authorization } = req.headers;
-      const authorized = await auth.getToken(authorization)
+      const authorized = await auth.getToken(authorization);
 
       if (!authorized) {
         return res.status(403).send({
@@ -94,7 +94,7 @@ module.exports = class AuthorController {
       const { _id } = req.params;
       const { body } = req;
       const { authorization } = req.headers;
-      const authorized = await auth.getToken(authorization)
+      const authorized = await auth.getToken(authorization);
 
       if (!authorized) {
         return res.status(403).send({
@@ -120,7 +120,7 @@ module.exports = class AuthorController {
     try {
       const { _id } = req.params;
       const { authorization } = req.headers;
-      const authorized = await auth.getToken(authorization)
+      const authorized = await auth.getToken(authorization);
 
       if (!authorized) {
         return res.status(403).send({
