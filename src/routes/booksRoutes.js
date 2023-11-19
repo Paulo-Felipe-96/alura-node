@@ -6,7 +6,7 @@ const {
   deleteManyBooksById,
   getBookById,
   updateBookById,
-  findBookByPublisherId,
+  getBookByPublisherId,
   findBookByAuthorId,
 } = require("../controllers/bookController");
 
@@ -14,7 +14,7 @@ const router = Router();
 
 router
   .get("/library/livros", getBooks)
-  .get("/library/livros/editora/:editora", findBookByPublisherId)
+  .get("/library/livros/editora/:editora", getBookByPublisherId)
   .get("/library/livros/autor/:autor", findBookByAuthorId)
   .get("/library/livros/:_id", getBookById)
   .post("/library/livros", setBook)
