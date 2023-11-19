@@ -1,3 +1,4 @@
+const { auth } = require("../models");
 const BookRepository = require("../repositories/BookRepository");
 
 const books = new BookRepository();
@@ -7,6 +8,14 @@ module.exports = class BookController {
     try {
       const { body } = req;
       const data = await books.getBooks(body);
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
 
       if (!data.length) {
         return res.status(404).send({
@@ -26,6 +35,14 @@ module.exports = class BookController {
     try {
       const { _id } = req.params;
       const data = await books.getBookById(_id);
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
 
       if (!data) {
         return res.status(404).send({
@@ -41,10 +58,18 @@ module.exports = class BookController {
     }
   }
 
-  static async findBookByPublisherId(req, res) {
+  static async getBookByPublisherId(req, res) {
     try {
       const { editora } = req.params;
       const data = await books.getBooksByPublisherId(editora);
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
 
       if (!data) {
         return res.status(404).send({
@@ -64,6 +89,14 @@ module.exports = class BookController {
     try {
       const { autor } = req.params;
       const data = await books.getBooksByAuthorId(autor);
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
 
       if (!data) {
         return res.status(404).send({
@@ -83,6 +116,14 @@ module.exports = class BookController {
     try {
       const { body } = req;
       const data = await books.set(body);
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
 
       if (!data) {
         return res
@@ -103,6 +144,14 @@ module.exports = class BookController {
       const { _id } = req.params;
       const { body } = req;
       const { modifiedCount } = await books.updateById(_id, body);
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
 
       const message = !modifiedCount
         ? "Nenhum dado foi atualizado"
@@ -120,6 +169,14 @@ module.exports = class BookController {
     try {
       const { _id } = req.params;
       const { deletedCount } = await books.deleteById(_id);
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
 
       if (!deletedCount) {
         return res
@@ -138,6 +195,14 @@ module.exports = class BookController {
   static async deleteManyBooksById(req, res) {
     try {
       const { livros } = req.body;
+      const { authorization } = req.headers;
+      const authorized = await auth.getToken(authorization);
+
+      if (!authorized) {
+        return res.status(403).send({
+          message: "usuário não autorizado",
+        });
+      }
 
       if (!Array.isArray(livros)) {
         return res.status(400).send({
