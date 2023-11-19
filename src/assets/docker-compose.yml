@@ -6,7 +6,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - /home/paulo.martins/mongodb/database:/data/db
+      - PLEASE_SET_PATH_TO_DB_HERE
     ports:
       - 27017:27017
     restart: unless-stopped
